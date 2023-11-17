@@ -104,7 +104,7 @@ class API {
                 {headers: {...auth_headers, ...headers}}
             );
                         
-            if (response.status != 200) throw new Error("Error in compliance check.");
+            if (response.status != 200) return response.data ? response.data :{message: "Error in compliance check."} ;;
             return response.data;
         }
         
