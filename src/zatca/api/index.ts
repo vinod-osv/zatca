@@ -5,7 +5,7 @@ import { cleanUpCertificateString } from "../signing";
 const settings = {
     API_VERSION: "V2",
     SANDBOX_BASEURL: "https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal",
-    PRODUCTION_BASEURL: "TODO"
+    PRODUCTION_BASEURL: "https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal"
 }
 
 interface ComplianceAPIInterface {
@@ -123,7 +123,7 @@ class API {
                 "Accept-Version": settings.API_VERSION
             };
 
-            const response = await axios.post(`${settings.SANDBOX_BASEURL}/production/csids`,
+            const response = await axios.post(`${settings.PRODUCTION_BASEURL}/production/csids`,
                 {compliance_request_id: compliance_request_id},
                 {headers: {...auth_headers, ...headers}}
             );
@@ -144,7 +144,7 @@ class API {
                 "Clearance-Status": "0"
             };
 
-            const response = await axios.post(`${settings.SANDBOX_BASEURL}/invoices/reporting/single`,
+            const response = await axios.post(`${settings.PRODUCTION_BASEURL}/invoices/reporting/single`,
                 {
                     invoiceHash: invoice_hash,
                     uuid: egs_uuid,
