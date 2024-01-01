@@ -88,7 +88,7 @@ export class ZATCASimplifiedTaxInvoice {
                 "cbc:Amount": {
                     "@_currencyID": "SAR",
                     // BR-DEC-01
-                    "#text": discount.amount.toFixedNoRounding(2)
+                    "#text": discount.amount
                 }
             });
         });
