@@ -1,5 +1,5 @@
 {
-  "name": "zatca-xml-js",
+  "name": "zatca-xml-js-sv",
   "version": "0.1.9",
   "description": "An implementation of Saudi Arabia ZATCA's E-Invoicing requirements, processes, and standards.",
   "main": "lib/index.js",
