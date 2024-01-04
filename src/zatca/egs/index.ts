@@ -17,7 +17,7 @@ export interface EGSUnitLocation {
     city: string,
     city_subdivision: string,
     street: string,
-    plot_identification: string,
+    plot_identification?: string,
     building: string,
     postal_zone: string
 }
