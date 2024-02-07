@@ -122,6 +122,7 @@ class API {
             const headers = {
                 "Accept-Version": settings.API_VERSION
             };
+            console.log("Production issueCertificate URL: "+ ${settings.PRODUCTION_BASEURL});
 
             const response = await axios.post(`${settings.PRODUCTION_BASEURL}/production/csids`,
                 {compliance_request_id: compliance_request_id},
