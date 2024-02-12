@@ -124,7 +124,7 @@ class API {
             };
             console.log("Production issueCertificate URL: "+ ${settings.PRODUCTION_BASEURL});
 
-            const response = await axios.post(`${settings.PRODUCTION_BASEURL}/production/csids`,
+            const response = await axios.post(`${settings.PRODUCTION_BASEURL}/core/production/csids`,
                 {compliance_request_id: compliance_request_id},
                 {headers: {...auth_headers, ...headers}}
             );
