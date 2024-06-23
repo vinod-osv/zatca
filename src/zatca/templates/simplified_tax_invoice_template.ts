@@ -69,7 +69,13 @@ const template = /* XML */`
       </cac:PartyLegalEntity>
     </cac:Party>
   </cac:AccountingSupplierParty>
-  <cac:AccountingCustomerParty></cac:AccountingCustomerParty>
+  <cac:AccountingCustomerParty>
+        <cac:Party>
+            <cac:PartyLegalEntity>
+            <cbc:RegistrationName>SET_BUYER_NAME</cbc:RegistrationName>
+            </cac:PartyLegalEntity>
+            </cac:Party>
+    </cac:AccountingCustomerParty>
 </Invoice>
 `;
 
@@ -153,5 +159,6 @@ export default function populate(props: ZATCASimplifiedInvoiceProps): string {
 
     populated_template = populated_template.replace("SET_VAT_NUMBER", props.egs_info.VAT_number);
     populated_template = populated_template.replace("SET_VAT_NAME", props.egs_info.VAT_name);
+    populated_template = populated_template.replace("SET_BUYER_NAME", props.egs_info.buyerName);
     return populated_template;
 };

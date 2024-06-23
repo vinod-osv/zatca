@@ -39,6 +39,7 @@ export interface EGSUnitInfo {
     compliance_api_secret?: string,
     production_certificate?: string,
     production_api_secret?: string,
+    buyerName:string
 }
 
 const OpenSSL = (cmd: string[]): Promise<string> => {
