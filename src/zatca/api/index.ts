@@ -74,11 +74,22 @@ class API {
                 "Accept-Version": settings.API_VERSION,
                 OTP: otp
             };
+            const url = `${settings.SANDBOX_BASEURL}/compliance`;
+            let finalHeaders = {...auth_headers, ...headers};
+            let crsObj = Buffer.from(csr).toString("base64");
+            let reqBody = {csr: crsObj};
 
-            const response = await axios.post(`${settings.SANDBOX_BASEURL}/compliance`,
-                {csr: Buffer.from(csr).toString("base64")},
-                {headers: {...auth_headers, ...headers}}
+            console.log("Sandbox issueCertificate " +url);
+            console.log("Sandbox header " +JSON.stringify(finalHeaders));
+            console.log("Sandbox body " +JSON.stringify(reqBody));
+
+
+            const response = await axios.post(url,
+                reqBody,
+                {headers: finalHeaders}
             );
+
+            console.log("IssueCertificate Response Status: "+response.status);
                         
             if (response.status != 200) throw new Error("Error issuing a compliance certificate.");
 
@@ -94,15 +105,24 @@ class API {
                 "Accept-Version": settings.API_VERSION,
                 "Accept-Language": "en",
             };
+            const url = `${settings.SANDBOX_BASEURL}/compliance/invoices`;
+            let finalHeaders = {...auth_headers, ...headers};
+            
+            let reqBody = {
+                invoiceHash: invoice_hash,
+                uuid: egs_uuid,
+                invoice: Buffer.from(signed_xml_string).toString("base64")
+            };
 
-            const response = await axios.post(`${settings.SANDBOX_BASEURL}/compliance/invoices`,
-                {
-                    invoiceHash: invoice_hash,
-                    uuid: egs_uuid,
-                    invoice: Buffer.from(signed_xml_string).toString("base64")
-                },
-                {headers: {...auth_headers, ...headers}}
+            console.log("Sandbox checkInvoiceCompliance " +url);
+            console.log("Sandbox checkInvoiceCompliance header " +JSON.stringify(finalHeaders));
+            console.log("Sandbox checkInvoiceCompliance body " +JSON.stringify(reqBody));
+
+            const response = await axios.post(url,
+                reqBody,
+                {headers: finalHeaders}
             );
+            console.log("Sandbox checkInvoiceCompliance Response Status: "+response.status);
                         
             if (response.status != 200) return response.data ? response.data :{message: "Error in compliance check."} ;;
             return response.data;
@@ -122,12 +142,18 @@ class API {
             const headers = {
                 "Accept-Version": settings.API_VERSION
             };
-            //console.log("Production issueCertificate URL: "+ ${settings.PRODUCTION_BASEURL});
+            let finalHeaders = {...auth_headers, ...headers};
+            const url = `${settings.PRODUCTION_BASEURL}/core/production/csids`;
 
-            const response = await axios.post(`${settings.PRODUCTION_BASEURL}/core/production/csids`,
+            console.log("Production issueCertificate " +url);
+            console.log("Production header " +JSON.stringify(finalHeaders));
+
+            const response = await axios.post(url,
                 {compliance_request_id: compliance_request_id},
-                {headers: {...auth_headers, ...headers}}
+                {headers: finalHeaders}
             );
+
+            console.log("Production IssueCertificate Response Status: "+response.status);
                         
             if (response.status != 200) throw new Error("Error issuing a production certificate.");
 
@@ -144,16 +170,23 @@ class API {
                 "Accept-Language": "en",
                 "Clearance-Status": "0"
             };
+            let finalHeaders = {...auth_headers, ...headers};
+            const url = `${settings.PRODUCTION_BASEURL}/invoices/reporting/single`;
+            let reqBody = {
+                invoiceHash: invoice_hash,
+                uuid: egs_uuid,
+                invoice: Buffer.from(signed_xml_string).toString("base64")
+            };
 
-            const response = await axios.post(`${settings.PRODUCTION_BASEURL}/invoices/reporting/single`,
-                {
-                    invoiceHash: invoice_hash,
-                    uuid: egs_uuid,
-                    invoice: Buffer.from(signed_xml_string).toString("base64")
-                },
-                {headers: {...auth_headers, ...headers}}
+            console.log("Production reportInvoice " +url);
+            console.log("Production reportInvoice header " +JSON.stringify(finalHeaders));
+            console.log("Production reportInvoice header " +JSON.stringify(reqBody));
+
+            const response = await axios.post(url,
+                reqBody,
+                {headers: finalHeaders}
             );
-                        
+            console.log("Production IssueCertificate reportInvoice Status: "+response.status); 
             if (response.status != 200) throw new Error("Error in reporting invoice.");
             return response.data;
         }
