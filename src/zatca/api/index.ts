@@ -56,8 +56,11 @@ class API {
 
     private getAuthHeaders = (certificate?: string, secret?: string): any => {
         if (certificate && secret) {
-
+            console.log("=======================");
+            console.log(certificate);
             const certificate_stripped = cleanUpCertificateString(certificate);
+            console.log(certificate_stripped);
+            console.log("=======================");
             const basic = Buffer.from(`${Buffer.from(certificate_stripped).toString("base64")}:${secret}`).toString("base64");
             return {
                 "Authorization": `Basic ${basic}`   
