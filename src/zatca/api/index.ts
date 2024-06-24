@@ -171,7 +171,7 @@ class API {
                 "Clearance-Status": "0"
             };
             let finalHeaders = {...auth_headers, ...headers};
-            const url = `${settings.PRODUCTION_BASEURL}/invoices/reporting/single`;
+            const url = `${settings.PRODUCTION_BASEURL}/core/invoices/reporting/single`;
             let reqBody = {
                 invoiceHash: invoice_hash,
                 uuid: egs_uuid,
