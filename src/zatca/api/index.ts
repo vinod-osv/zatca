@@ -56,11 +56,9 @@ class API {
 
     private getAuthHeaders = (certificate?: string, secret?: string): any => {
         if (certificate && secret) {
-            console.log("=======================");
             console.log(certificate);
             const certificate_stripped = cleanUpCertificateString(certificate);
             console.log(certificate_stripped);
-            console.log("=======================");
             const basic = Buffer.from(`${Buffer.from(certificate_stripped).toString("base64")}:${secret}`).toString("base64");
             return {
                 "Authorization": `Basic ${basic}`   
@@ -190,7 +188,15 @@ class API {
                 {headers: finalHeaders}
             );
             console.log("Production IssueCertificate reportInvoice Status: "+response.status); 
-            if (response.status != 200) throw new Error("Error in reporting invoice.");
+            if (response.status != 200) 
+                {   console.log("Error in reportInvoice ") ;
+                    if(response.data){
+                        console.log(JSON.stringify(response.data)) ;
+                    }
+                    
+                    throw new Error("Error in reporting invoice.");
+
+                }
             return response.data;
         }
 
