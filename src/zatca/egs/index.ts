@@ -85,6 +85,7 @@ const generateCSR = async (egs_info: EGSUnitInfo, production: boolean, solution_
     // This creates a temporary private file, and csr config file to pass to OpenSSL in order to create and sign the CSR.
     // * In terms of security, this is very bad as /tmp can be accessed by all users. a simple watcher by unauthorized user can retrieve the keys.
     // Better change it to some protected dir.
+    console.log("Production : "+production);
     const private_key_file = `${process.env.TEMP_FOLDER ?? "/tmp/"}${uuidv4()}.pem`;
     const csr_config_file = `${process.env.TEMP_FOLDER ?? "/tmp/"}${uuidv4()}.cnf`;
     fs.writeFileSync(private_key_file, egs_info.private_key);
@@ -100,6 +101,7 @@ const generateCSR = async (egs_info: EGSUnitInfo, production: boolean, solution_
         taxpayer_provided_id: egs_info.custom_id,
         production: production
     }));
+
     
     const cleanUp = () => {
         fs.unlink(private_key_file, ()=>{});
@@ -107,6 +109,7 @@ const generateCSR = async (egs_info: EGSUnitInfo, production: boolean, solution_
     };
     
     try {    
+        console.log("csr_config_file "+csr_config_file);
         const result = await OpenSSL(["req", "-new", "-sha256", "-key", private_key_file, "-config", csr_config_file]);
         if (!result.includes("-----BEGIN CERTIFICATE REQUEST-----")) throw new Error("Error no CSR found in OpenSSL output.");
 
