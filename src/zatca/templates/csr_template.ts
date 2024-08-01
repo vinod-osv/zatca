@@ -1,5 +1,5 @@
 // 2.2.2 Profile specification of the Cryptographic Stamp identifiers. & CSR field contents / RDNs.
-const template = `
+/*const template = `
 # ------------------------------------------------------------------
 # Default section for "req" command options
 # ------------------------------------------------------------------
@@ -52,6 +52,38 @@ organizationName = SET_TAXPAYER_NAME
 
 # ISO2 country code is required with US as default
 countryName = SA
+`;*/
+const template = `
+oid_section = OIDs
+[ OIDs ]
+certificateTemplateName= 1.3.6.1.4.1.311.20.2
+[ req ]
+default_bits = 2048
+emailAddress = myEmail@email.com
+req_extensions = v3_req
+x509_extensions = v3_ca
+prompt = no
+default_md = sha256
+req extensions = req_ext
+distinguished_ name = dn
+
+
+[ dn ]
+C=SA
+OU=SET_BRANCH_NAME
+0=SET_TAXPAYER_NAME
+CN = SET_COMMON_NAME
+[ v3_req ]
+basicConstraints = CA: FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment
+[req_ext]
+certificateTemplateName = ASN1:PRINTABLESTRING: ZATCA-Code-Signing
+[alt_names]
+SN=SET_EGS_SERIAL_NUMBER
+UID=SET_VAT_REGISTRATION_NUMBER
+title=0100
+registeredAddress=SET_BRANCH_LOCATION
+businessCategory=SET_BRANCH_INDUSTRY
 `;
 
 
