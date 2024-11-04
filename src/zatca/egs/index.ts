@@ -39,7 +39,19 @@ export interface EGSUnitInfo {
     compliance_api_secret?: string,
     production_certificate?: string,
     production_api_secret?: string,
-    buyerName:string
+    buyerName:string,
+    buyerStreet?:string,
+    buyerBuilding?:string,
+    buyerPlot_identification?:string,
+    buyerCity_subdivision?:string,
+    buyerCity?:string,
+    buyerPostal_zone?:string,
+    buyerVatNumber?:string,
+    isStandardInvoice?: string,
+    deliveryDate?:string,
+    paymentMode?:string,
+    buyerCRN?:string
+
 }
 
 const OpenSSL = (cmd: string[]): Promise<string> => {
