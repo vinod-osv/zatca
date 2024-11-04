@@ -1,4 +1,5 @@
 import { EGSUnitInfo } from "../egs";
+import { EGSTDUnitInfo } from "../egstd";
 import defaultBillingReference from "./invoice_billing_reference_template";
 
 /**
@@ -140,7 +141,7 @@ export interface ZATCASimplifiedInvoicCancelation{
 }
 
 export interface ZATCAStandardInvoiceProps {
-    egs_info: EGSUnitInfo,
+    egs_info: EGSTDUnitInfo,
     invoice_counter_number: number,
     invoice_serial_number: string,
     issue_date: string,

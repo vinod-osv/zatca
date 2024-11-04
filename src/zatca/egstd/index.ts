@@ -11,9 +11,9 @@ import fs from "fs";
 
 import defaultCSRConfig from "../templates/csr_template";
 import API from "../api";
-import { ZATCASimplifiedTaxInvoice } from "../ZATCASimplifiedTaxInvoice";
+import { ZATCAStandardTaxInvoice } from "../ZATCAStandardTaxInvoice";
 
-export interface EGSUnitLocation {
+export interface EGSTDUnitLocation {
     city: string,
     city_subdivision: string,
     street: string,
@@ -22,7 +22,7 @@ export interface EGSUnitLocation {
     postal_zone: string
 }
 
-export interface EGSUnitInfo {
+export interface EGSTDUnitInfo {
     uuid: string,
     custom_id: string,
     model: string,
@@ -31,7 +31,7 @@ export interface EGSUnitInfo {
     VAT_number: string,
     branch_name: string,
     branch_industry: string,
-    location: EGSUnitLocation,
+    location: EGSTDUnitLocation,
 
     private_key?: string,
     csr?: string,
@@ -39,7 +39,18 @@ export interface EGSUnitInfo {
     compliance_api_secret?: string,
     production_certificate?: string,
     production_api_secret?: string,
-    buyerName:string
+    buyerName:string,
+    buyerStreet:string,
+    buyerBuilding:string,
+    buyerPlot_identification:string,
+    buyerCity_subdivision:string,
+    buyerCity:string,
+    buyerPostal_zone:string,
+    buyerVatNumber:string,
+    isStandardInvoice: string,
+    deliveryDate:string,
+    paymentMode:string,
+    buyerCRN:string
 
 }
 
@@ -80,7 +91,7 @@ const generateSecp256k1KeyPair = async (): Promise<string> => {
 
 // Generate a signed ecdsaWithSHA256 CSR
 // 2.2.2 Profile specification of the Cryptographic Stamp identifiers. & CSR field contents / RDNs.
-const generateCSR = async (egs_info: EGSUnitInfo, production: boolean, solution_name: string): Promise<string> => {
+const generateCSR = async (egs_info: EGSTDUnitInfo, production: boolean, solution_name: string): Promise<string> => {
     if (!egs_info.private_key) throw new Error("EGS has no private key");
 
     // This creates a temporary private file, and csr config file to pass to OpenSSL in order to create and sign the CSR.
@@ -128,12 +139,12 @@ const generateCSR = async (egs_info: EGSUnitInfo, production: boolean, solution_
 
 
 
-export class EGS {
+export class EGSTD {
 
-    private egs_info: EGSUnitInfo;
+    private egs_info: EGSTDUnitInfo;
     private api: API;
 
-    constructor(egs_info: EGSUnitInfo) {
+    constructor(egs_info: EGSTDUnitInfo) {
         this.egs_info = egs_info;
         this.api = new API();
     }
@@ -150,7 +161,7 @@ export class EGS {
      * Sets/Updates an EGS info field.
      * @param egs_info Partial<EGSUnitInfo>
      */
-    set(egs_info: Partial<EGSUnitInfo>) {
+    set(egs_info: Partial<EGSTDUnitInfo>) {
         this.egs_info = {...this.egs_info, ...egs_info};
     }
 
@@ -244,7 +255,7 @@ export class EGS {
      * @param production Boolean production or compliance certificate.
      * @returns Promise void on success (signed_invoice_string: string, invoice_hash: string, qr: string), throws error on fail.
      */
-    signInvoice(invoice: ZATCASimplifiedTaxInvoice, production?: boolean): {signed_invoice_string: string, invoice_hash: string, qr: string} {
+    signInvoice(invoice: ZATCAStandardTaxInvoice, production?: boolean): {signed_invoice_string: string, invoice_hash: string, qr: string} {
         const certificate = production ? this.egs_info.production_certificate : this.egs_info.compliance_certificate;
         if (!certificate || !this.egs_info.private_key) throw new Error("EGS is missing a certificate/private key to sign the invoice.");
 
