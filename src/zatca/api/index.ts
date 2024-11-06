@@ -45,6 +45,15 @@ interface ProductionAPIInterface {
      */
       reportInvoice: (signed_xml_string: string, invoice_hash: string, egs_uuid: string) => Promise<any>
 
+      /**
+     * Report signed ZATCA XML.
+     * @param signed_xml_string String.
+     * @param invoice_hash String.
+     * @param egs_uuid String.
+     * @returns Any status.
+     */
+      clearanceInvoice: (signed_xml_string: string, invoice_hash: string, egs_uuid: string) => Promise<any>
+
 }
 
 
@@ -199,10 +208,45 @@ class API {
                 }
             return response.data;
         }
+        const clearanceInvoice = async (signed_xml_string: string, invoice_hash: string, egs_uuid: string): Promise<any> => {
+            const headers = {
+                "Accept-Version": settings.API_VERSION,
+                "Accept-Language": "en",
+                "Clearance-Status": "0"
+            };
+            let finalHeaders = {...auth_headers, ...headers};
+            const url = `${settings.PRODUCTION_BASEURL}/core/invoices/clearance/single`;
+            let reqBody = {
+                invoiceHash: invoice_hash,
+                uuid: egs_uuid,
+                invoice: Buffer.from(signed_xml_string).toString("base64")
+            };
+
+            console.log("Production clearanceInvoice " +url);
+            console.log("Production clearanceInvoice header " +JSON.stringify(finalHeaders));
+            console.log("Production clearanceInvoice header " +JSON.stringify(reqBody));
+
+            const response = await axios.post(url,
+                reqBody,
+                {headers: finalHeaders}
+            );
+            console.log("Production IssueCertificate clearanceInvoice Status: "+response.status); 
+            if (response.status != 200) 
+                {   console.log("Error in clearanceInvoice ") ;
+                    if(response.data){
+                        console.log(JSON.stringify(response.data)) ;
+                    }
+                    
+                    throw new Error("Error in clearanceInvoice invoice.");
+
+                }
+            return response.data;
+        }
 
         return {
             issueCertificate,
-            reportInvoice
+            reportInvoice,
+            clearanceInvoice
         }
     }
   
