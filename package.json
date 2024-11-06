@@ -10,6 +10,7 @@
     "build": "tsc --project tsconfig.build.json",
     "test": "tsc && node testing_lib/tests/test.js",
     "example": "tsc --project tsconfig.build.json && node lib/examples/full.js",
+    "exampleTwo": "tsc --project tsconfig.build.json && node lib/stdexample/stdfull.js",
     "prepare": "npm run build"
   },
   "devDependencies": {

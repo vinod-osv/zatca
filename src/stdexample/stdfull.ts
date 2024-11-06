@@ -9,14 +9,7 @@ const line_item: ZATCAStandardInvoiceLineItem = {
     name: "TEST NAME",
     quantity: 5,
     tax_exclusive_price: 10,
-    VAT_percent: 0.15,
-    other_taxes: [
-        {percent_amount: 1}
-    ],
-    discounts: [
-        {amount: 2, reason: "A discount"},
-        {amount: 2, reason: "A second discount"}
-    ]
+    VAT_percent: 0.15
 };
 
 // Sample EGSUnit
@@ -44,7 +37,7 @@ const egsunit: EGSTDUnitInfo = {
     buyerCity_subdivision: "West",
     buyerCity: "Khobar",
     buyerPostal_zone: "31952",
-    buyerVatNumber: "301121971500004",
+    buyerVatNumber: "301121971510003",
     isStandardInvoice: "YES",
     deliveryDate: "2022-09-07",
     paymentMode: "10",
@@ -84,7 +77,7 @@ const main = async () => {
 
         // Issue a new compliance cert for the EGS
         const compliance_request_id = await egs.issueComplianceCertificate("123345");
-
+        
         // Sign invoice
         const {signed_invoice_string, invoice_hash, qr} = egs.signInvoice(invoice);
 
