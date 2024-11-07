@@ -239,10 +239,10 @@ export class EGSTD {
      * @param invoice_hash String.
      * @returns Promise reporting data on success, throws error on fail.
      */
-    async reportInvoice(signed_invoice_string: string, invoice_hash: string): Promise<any> {
+    async clearanceInvoice(signed_invoice_string: string, invoice_hash: string): Promise<any> {
         if(!this.egs_info.production_certificate || !this.egs_info.production_api_secret) throw new Error("EGS is missing a certificate/private key/api secret to report the invoice.")
 
-        return await this.api.production(this.egs_info.production_certificate, this.egs_info.production_api_secret).reportInvoice(
+        return await this.api.production(this.egs_info.production_certificate, this.egs_info.production_api_secret).clearanceInvoice(
             signed_invoice_string,
             invoice_hash,
             this.egs_info.uuid
